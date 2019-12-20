@@ -12,7 +12,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 8, fig.height = 4, fig.align = "left")
 
-library(flexdashboard) ; library(knitr) ; library(tidyverse) ; library(rtweet) ; library(tidytext) ; library(reshape2) ; library(igraph) ; library(grid) ; library(ggraph) ; library(lubridate) ; library(DT) ; library(htmltools)
+library(flexdashboard) ; library(knitr) ; library(tidyverse) ; library(rtweet) ; library(tidytext) ; library(reshape2) ; library(igraph) ; library(grid) ; library(ggraph) ; library(lubridate) ; library(DT) ; library(htmltools) ; library(scales)
 
 # ggplot2 theme
 theme_x <- function () { 
@@ -101,7 +101,8 @@ tweets %>%
   ggplot(aes(x = reorder(screen_name, n), y = n)) +
   geom_col(fill = "#88CCEE") +
   geom_hline(yintercept = 0, size = 1, colour = "#333333") +
-  scale_y_continuous(expand = c(0.005, 0.005)) +
+  scale_y_continuous(expand = c(0.005, 0.005),
+                     breaks = pretty_breaks()) +
   labs(x = NULL, y = NULL,
        title = "Frequency of tweets by handle",
        subtitle = paste0("@TraffordCouncil  or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
@@ -122,7 +123,8 @@ tidy_tweets %>%
   ggplot(aes(word, n)) +
   geom_col(fill = "#CC6677") +
   geom_hline(yintercept = 0, size = 1, colour = "#333333") +
-  scale_y_continuous(expand = c(0.005, 0.005)) +
+  scale_y_continuous(expand = c(0.005, 0.005),
+                     breaks = pretty_breaks()) +
   labs(x = NULL, y = NULL,
        title = "Most common words",
        subtitle = paste0("@TraffordCouncil  or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
@@ -140,7 +142,8 @@ tidy_tweets %>%
   ggplot(aes(word, n)) +
   geom_col(fill = "#DDCC77") +
   geom_hline(yintercept = 0, size = 1, colour = "#333333") +
-  scale_y_continuous(expand = c(0.005, 0.005)) +
+  scale_y_continuous(expand = c(0.005, 0.005),
+                     breaks = pretty_breaks()) +
   labs(x = NULL, y = NULL,
        title = "Most common hashtags",
        subtitle = paste0("@TraffordCouncil  or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
@@ -160,7 +163,8 @@ tidy_tweets %>%
   geom_col(alpha = 0.7) +
   geom_hline(yintercept = 0, size = 1, colour = "#333333") +
   scale_fill_manual(values = c("positive" = "#44AA99", "negative" = "#999999")) + 
-  scale_y_continuous(expand = c(0.005, 0.005)) +
+  scale_y_continuous(expand = c(0.005, 0.005),
+                     breaks = pretty_breaks()) +
   coord_flip() +
   labs(x = NULL, y = NULL, 
        title = "Negative and positive sentiment in top words",
