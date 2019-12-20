@@ -1,6 +1,6 @@
 ---
 title: "Twitter analysis"
-author: "Last updated: `r format(Sys.time(), '%A %d %B %Y')`"
+author: "Last updated at `r paste0(format(Sys.time(), '%H:%M'), ' on ', format(Sys.time(), '%A %d %B %Y'))`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
