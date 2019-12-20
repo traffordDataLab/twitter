@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width 
 library(flexdashboard) ; library(knitr) ; library(tidyverse) ; library(rtweet) ; library(tidytext) ; library(reshape2) ; library(igraph) ; library(grid) ; library(ggraph) ; library(lubridate) ; library(DT) ; library(htmltools) ; library(scales)
 
 handle <- "@TraffLibraries"
+search_parameters <- paste0(handle, ' OR "Altrincham library" OR "Coppice library" OR "Hale library" OR "Trafford Local Studies" OR "Lostock library" OR "Old Trafford library" OR "Partington library" OR "Sale library" OR "Stretford library" OR "Timperley library" OR "Trafford Town Hall Library" OR "Urmston library" OR "Woodsend library"')
 
 # ggplot2 theme
 theme_x <- function () { 
@@ -28,7 +29,7 @@ theme_x <- function () {
 }
 
 # get tweets
-tweets <- search_tweets(q = paste0(handle, ' OR "Altrincham library" OR "Coppice library" OR "Hale library" OR "Trafford Local Studies" OR "Lostock library" OR "Old Trafford library" OR "Partington library" OR "Sale library" OR "Stretford library" OR "Timperley library" OR "Trafford Town Hall Library" OR "Urmston library" OR "Woodsend library"'),
+tweets <- search_tweets(q = search_parameters,
                           n = 18000,
                           include_rts = FALSE,
                           `-filter` = "replies",
@@ -214,6 +215,6 @@ ggraph(bigram_graph, layout = "fr") +
 Information {data-icon="fa-info-circle"}
 =====================================
 
-This dashboard retrieves tweets over the last 6-9 days that mention Trafford's libraries. Tweets were last retrived at `r paste0(format(Sys.time(), '%H:%M'), ' on ', format(Sys.time(), '%d %B %Y'))` using the following search parameters: '@TraffLibraries  OR "Altrincham library" OR "Coppice library" OR "Hale library" OR "Trafford Local Studies" OR "Lostock library" OR "Old Trafford library" OR "Partington library" OR "Sale library" OR "Stretford library" OR "Timperley library" OR "Trafford Town Hall Library" OR "Urmston library" OR "Woodsend library"'. The [rtweet](https://cran.r-project.org/web/packages/rtweet) [R](https://www.r-project.org/) package was used to retrieve the tweets and [tidytext](https://cran.r-project.org/web/packages/tidytext) to tokenise them for analysis.   
+This dashboard retrieves tweets over the last 6-9 days that mention Trafford's libraries. Tweets were last retrieved at `r paste0(format(Sys.time(), '%H:%M'), ' on ', format(Sys.time(), '%d %B %Y'))` using the following search parameters: '`r search_parameters`'. The [rtweet](https://cran.r-project.org/web/packages/rtweet) [R](https://www.r-project.org/) package was used to retrieve the tweets and [tidytext](https://cran.r-project.org/web/packages/tidytext) to tokenise them for analysis.   
 
 **Please note** that some of the tweets may not be relevant because the search parameters were unable to filter them.
