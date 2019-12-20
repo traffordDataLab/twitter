@@ -1,6 +1,6 @@
 ---
-title: "Twitter analysis"
-author: "Last updated at `r paste0(format(Sys.time(), '%H:%M'), ' on ', format(Sys.time(), '%A %d %B %Y'))`"
+title: "@TraffordCouncil mentions"
+author: "Updated: `r paste0(format(Sys.time(), '%H:%M'), ' on ', format(Sys.time(), '%d %B %Y'))`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -13,6 +13,8 @@ output:
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 8, fig.height = 4, fig.align = "left")
 
 library(flexdashboard) ; library(knitr) ; library(tidyverse) ; library(rtweet) ; library(tidytext) ; library(reshape2) ; library(igraph) ; library(grid) ; library(ggraph) ; library(lubridate) ; library(DT) ; library(htmltools) ; library(scales)
+
+handle <- "@TraffordCouncil"
 
 # ggplot2 theme
 theme_x <- function () { 
@@ -27,7 +29,7 @@ theme_x <- function () {
 }
 
 # get tweets
-tweets <- search_tweets(q = '@TraffordCouncil OR "Trafford Council"',
+tweets <- search_tweets(q = paste0(handle, ' OR "Trafford Council"'),
                           n = 18000,
                           include_rts = FALSE,
                           `-filter` = "replies",
@@ -71,7 +73,7 @@ tweets %>%
             filter = 'top',
             caption = tags$caption(
             style = 'caption-side: bottom; text-align: center;',
-            em("Tweets mentioning @TraffordCouncil or 'Trafford Council'")),
+            em(paste0("Tweets mentioning ", handle))),
             width = "100%",
             options = list(
               search = list(regex = TRUE),
@@ -105,7 +107,7 @@ tweets %>%
                      breaks = pretty_breaks()) +
   labs(x = NULL, y = NULL,
        title = "Frequency of tweets by handle",
-       subtitle = paste0("@TraffordCouncil  or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
+       subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   coord_flip() +
   guides(fill = FALSE) +
   theme_x()
@@ -127,7 +129,7 @@ tidy_tweets %>%
                      breaks = pretty_breaks()) +
   labs(x = NULL, y = NULL,
        title = "Most common words",
-       subtitle = paste0("@TraffordCouncil  or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
+       subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   coord_flip() +
   theme_x()
 ```
@@ -146,7 +148,7 @@ tidy_tweets %>%
                      breaks = pretty_breaks()) +
   labs(x = NULL, y = NULL,
        title = "Most common hashtags",
-       subtitle = paste0("@TraffordCouncil  or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
+       subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   coord_flip() +
   theme_x()
 ```
@@ -168,7 +170,7 @@ tidy_tweets %>%
   coord_flip() +
   labs(x = NULL, y = NULL, 
        title = "Negative and positive sentiment in top words",
-       subtitle = paste0("@TraffordCouncil or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
+       subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   theme_x() +
   theme(legend.position = "none")
 ```
@@ -202,7 +204,7 @@ ggraph(bigram_graph, layout = "fr") +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
   labs(x = NULL, y = NULL, 
        title = "Bigram network graph",
-       subtitle = paste0("@TraffordCouncil or 'Trafford Council' mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
+       subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   theme_x() +
   theme(panel.grid.major.x = element_blank(),
         axis.text = element_blank())
