@@ -1,6 +1,5 @@
 ---
 title: "@TraffLibraries mentions"
-author: "Updated: `r paste0(format(Sys.time(), '%H:%M'), ' on ', format(Sys.time(), '%d %B %Y'))`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -61,6 +60,9 @@ tweets$urls_expanded_url <- lapply(tweets$urls_expanded_url,
                                      function(x) sapply(x, createLink))
 ```
 
+Dashboard
+=====================================
+
 Row 
 -------------------------------------
 
@@ -117,8 +119,7 @@ tweets %>%
 ### Word frequency
 ```{r}
 tidy_tweets %>% 
-  filter(!str_detect(word, "@\\S+"),
-         !word %in% c("council", "trafford")) %>% # excluding "council" and "trafford"
+  filter(!str_detect(word, "@\\S+")) %>%
   count(word, sort = TRUE) %>% 
   filter(n > 10) %>% 
   mutate(word = reorder(word, n)) %>% 
@@ -210,3 +211,9 @@ ggraph(bigram_graph, layout = "fr") +
         axis.text = element_blank())
 ```
 
+Information {data-icon="fa-info-circle"}
+=====================================
+
+This dashboard retrieves tweets over the last 6-9 days that mention Trafford's ibraries Tweets were last retrived at *`r paste0(format(Sys.time(), '%H:%M'), ' on ', format(Sys.time(), '%d %B %Y'))`* using the following search parameters: '@TraffLibraries'  OR "Altrincham library" OR "Coppice library" OR "Hale library" OR "Trafford Local Studies" OR "Lostock library" OR "Old Trafford library" OR "Partington library" OR "Sale library" OR "Stretford library" OR "Timperley library" OR "Trafford Town Hall Library" OR "Urmston library" OR "Woodsend library"'. The [rwteet](https://cran.r-project.org/web/packages/rwteet) [R](https://www.r-project.org/) package was used to retrieve the tweets and [tidytext](https://cran.r-project.org/web/packages/tidytext) to tokenise them for analysis.   
+
+**Please note** that some of the tweets may not be relevant because the search parameters were unable to filter them.
