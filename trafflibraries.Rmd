@@ -64,36 +64,6 @@ tweets$urls_expanded_url <- lapply(tweets$urls_expanded_url,
 Dashboard
 =====================================
 
-Row 
--------------------------------------
-
-```{r table}
-tweets %>% 
-  select(created_at, screen_name, text, retweet_count, favorite_count, urls_expanded_url) %>% 
-  datatable(class = 'cell-border stripe',
-            colnames = c("Date", "Handle", "Tweet", "Retweets", "Likes", "URL"),
-            rownames = FALSE, 
-            filter = 'top',
-            caption = tags$caption(
-            style = 'caption-side: bottom; text-align: center;',
-            em(paste0("Tweets mentioning ", handle))),
-            width = "100%",
-            options = list(
-              search = list(regex = TRUE),
-              searchHighlight = TRUE,
-              dom = 'tip',
-              deferRender = TRUE,
-              scrollX = TRUE,
-              pageLength = 100,
-              autoWidth = TRUE,
-              columnDefs = list(
-                list(className = 'dt-left', targets = "_all"),
-                list(width = '70%', targets = 2),
-                list(targets = c(0,3,4,5), searchable = FALSE))
-              )) %>% 
-  formatStyle(columns = 0:4, fontSize = '90%')
-```
-
 Row {.tabset .tabset-fade}
 -------------------------------------
 
@@ -210,6 +180,33 @@ ggraph(bigram_graph, layout = "fr") +
   theme_x() +
   theme(panel.grid.major.x = element_blank(),
         axis.text = element_blank())
+```
+
+Row
+-------------------------------------
+
+```{r table}
+tweets %>% 
+  select(created_at, screen_name, text, retweet_count, favorite_count, urls_expanded_url) %>% 
+  datatable(class = 'cell-border stripe',
+            colnames = c("Date", "Handle", "Tweet", "Retweets", "Likes", "URL"),
+            rownames = FALSE, 
+            filter = 'top',
+            width = "100%",
+            options = list(
+              search = list(regex = TRUE),
+              searchHighlight = TRUE,
+              dom = 'tip',
+              deferRender = TRUE,
+              scrollX = TRUE,
+              pageLength = 100,
+              autoWidth = TRUE,
+              columnDefs = list(
+                list(className = 'dt-left', targets = "_all"),
+                list(width = '70%', targets = 2),
+                list(targets = c(0,3,4,5), searchable = FALSE))
+              )) %>% 
+  formatStyle(columns = 0:4, fontSize = '90%')
 ```
 
 Information {data-icon="fa-info-circle"}
