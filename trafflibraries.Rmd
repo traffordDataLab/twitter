@@ -36,7 +36,8 @@ tweets <- search_tweets(q = search_parameters,
                           retryonratelimit = TRUE,
                           lang = "en") %>%
   mutate(created_at = as.Date(as.POSIXct(created_at)),
-         screen_name = factor(screen_name))
+         screen_name = factor(screen_name),
+         urls_expanded_url = ifelse(is.na(urls_expanded_url), "", paste0("<a href='", urls_expanded_url, "' target='_blank'>", urls_expanded_url, "</a>")))
 
 # tokenise
 tidy_tweets <- tweets %>%
@@ -46,19 +47,6 @@ tidy_tweets <- tweets %>%
          !word %in% str_remove_all(stop_words$word, "'"),
          str_detect(word, "[a-z]")) %>% # remove numbers
   select(screen_name, word, created_at, is_retweet, hashtags)
-
-# create links
-createLink <- function(x) {
-  if(is.na(x)){
-    return("")
-  }else{
-    sprintf(paste0('<a href="', URLdecode(x),'" target="_blank">', 
-                   substr(x, 1, 25) ,'</a>'))
-  }
-}
-
-tweets$urls_expanded_url <- lapply(tweets$urls_expanded_url, 
-                                     function(x) sapply(x, createLink))
 ```
 
 Dashboard
@@ -200,6 +188,7 @@ tweets %>%
             colnames = c("Date", "Handle", "Tweet", "Retweets", "Likes", "URL"),
             rownames = FALSE, 
             filter = 'top',
+            escape = FALSE,
             width = "100%",
             options = list(
               search = list(regex = TRUE),
