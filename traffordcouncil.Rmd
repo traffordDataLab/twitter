@@ -75,15 +75,17 @@ tweets %>%
   mutate(screen_name = paste0("@", screen_name)) %>% 
   ggplot(aes(x = reorder(screen_name, n), y = n)) +
   geom_col(fill = "#88CCEE") +
+  geom_text(aes(label = n), hjust = 1.5, vjust = 0.5, colour = "white", fontface = "bold") +
   geom_hline(yintercept = 0, size = 1, colour = "#333333") +
-  scale_y_continuous(expand = c(0.005, 0.005),
-                     breaks = pretty_breaks()) +
+  scale_y_continuous(expand = c(0.005, 0.005)) +
   labs(x = NULL, y = NULL,
        title = "Frequency of tweets by handle",
        subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   coord_flip() +
   guides(fill = FALSE) +
-  theme_x()
+  theme_x() +
+  theme(panel.grid.major.x = element_blank(),
+        axis.text.x = element_blank())
 ```
 
 
@@ -97,14 +99,16 @@ tidy_tweets %>%
   mutate(word = reorder(word, n)) %>% 
   ggplot(aes(word, n)) +
   geom_col(fill = "#CC6677") +
+  geom_text(aes(label = n), hjust = 1.5, vjust = 0.5, colour = "white", fontface = "bold") +
   geom_hline(yintercept = 0, size = 1, colour = "#333333") +
-  scale_y_continuous(expand = c(0.005, 0.005),
-                     breaks = pretty_breaks()) +
+  scale_y_continuous(expand = c(0.005, 0.005)) +
   labs(x = NULL, y = NULL,
        title = "Most common words",
        subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   coord_flip() +
-  theme_x()
+  theme_x() +
+  theme(panel.grid.major.x = element_blank(),
+        axis.text.x = element_blank())
 ```
 
 ### Hashtag frequency
@@ -116,14 +120,16 @@ tidy_tweets %>%
   mutate(word = reorder(word, n)) %>% 
   ggplot(aes(word, n)) +
   geom_col(fill = "#DDCC77") +
+  geom_text(aes(label = n), hjust = 1.5, vjust = 0.5, colour = "white", fontface = "bold") +
   geom_hline(yintercept = 0, size = 1, colour = "#333333") +
-  scale_y_continuous(expand = c(0.005, 0.005),
-                     breaks = pretty_breaks()) +
+  scale_y_continuous(expand = c(0.005, 0.005)) +
   labs(x = NULL, y = NULL,
        title = "Most common hashtags",
        subtitle = paste0(handle, " mentions, ", format(min(tweets$created_at), "%d-%m"), " to ", format(max(tweets$created_at),"%d-%m-%Y"))) +
   coord_flip() +
-  theme_x()
+  theme_x() +
+    theme(panel.grid.major.x = element_blank(),
+        axis.text.x = element_blank())
 ```
 
 ### Sentiment analysis
