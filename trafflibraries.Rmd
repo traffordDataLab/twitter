@@ -36,8 +36,7 @@ tweets <- search_tweets(q = search_parameters,
                           retryonratelimit = TRUE,
                           lang = "en") %>%
   mutate(created_at = as.Date(as.POSIXct(created_at)),
-         screen_name = factor(screen_name),
-         urls_expanded_url = ifelse(is.na(urls_expanded_url), "", paste0("<a href='", urls_expanded_url, "' target='_blank'>", urls_expanded_url, "</a>")))
+         screen_name = factor(screen_name))
 
 # tokenise
 tidy_tweets <- tweets %>%
@@ -183,6 +182,10 @@ Row
 
 ```{r table}
 tweets %>% 
+  mutate(screen_name = paste0(
+  "<a href='https://twitter.com/", screen_name, 
+  "' target='_blank'>@", screen_name, "</a>"),
+         urls_expanded_url = ifelse(is.na(urls_expanded_url), "", paste0("<a href='", urls_expanded_url, "' target='_blank'>", urls_expanded_url, "</a>"))) %>% 
   select(created_at, screen_name, text, retweet_count, favorite_count, urls_expanded_url) %>% 
   datatable(class = 'cell-border stripe',
             colnames = c("Date", "Handle", "Tweet", "Retweets", "Likes", "URL"),
